@@ -8,6 +8,7 @@ package me.jiangcai.goods.demo.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.goods.Goods;
 import me.jiangcai.goods.GoodsImage;
 import me.jiangcai.goods.Seller;
 import me.jiangcai.goods.TradeEntity;
@@ -34,6 +35,16 @@ public class DemoTradedGoods implements TradedGoods, StockToken {
     private DemoGoods goods;
     @Column(length = GoodsCode.CodeLength)
     private String code;
+
+    @Override
+    public Goods getReferenceGoods() {
+        return goods.getReferenceGoods();
+    }
+
+    @Override
+    public List<? extends Goods> getAllReferencedGoods() {
+        return goods.getAllReferencedGoods();
+    }
 
     @Override
     public Long getId() {

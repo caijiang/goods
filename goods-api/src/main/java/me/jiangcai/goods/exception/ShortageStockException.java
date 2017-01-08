@@ -12,4 +12,8 @@ package me.jiangcai.goods.exception;
  * @author CJ
  */
 public class ShortageStockException extends RuntimeException {
+
+    public ShortageStockException() {
+        super("库存不足");
+    }
 }

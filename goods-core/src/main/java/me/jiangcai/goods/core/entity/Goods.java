@@ -74,6 +74,16 @@ public abstract class Goods implements me.jiangcai.goods.Goods, GoodsThreadSafeL
     }
 
     @Override
+    public me.jiangcai.goods.Goods getReferenceGoods() {
+        return null;
+    }
+
+    @Override
+    public List<? extends me.jiangcai.goods.Goods> getAllReferencedGoods() {
+        return null;
+    }
+
+    @Override
     public Object lockObject() {
         return ("Goods-" + id).intern();
     }
