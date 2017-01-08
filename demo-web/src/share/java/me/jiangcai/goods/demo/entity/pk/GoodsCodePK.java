@@ -9,7 +9,7 @@ package me.jiangcai.goods.demo.entity.pk;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import me.jiangcai.goods.core.entity.Goods;
+import me.jiangcai.goods.Goods;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

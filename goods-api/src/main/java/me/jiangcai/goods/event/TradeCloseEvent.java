@@ -7,6 +7,7 @@
 package me.jiangcai.goods.event;
 
 import lombok.Data;
+import me.jiangcai.goods.trade.Trade;
 
 /**
  * 订单关闭事件
@@ -15,4 +16,9 @@ import lombok.Data;
  */
 @Data
 public class TradeCloseEvent {
+    private final Trade trade;
+
+    public TradeCloseEvent(Trade trade) {
+        this.trade = trade;
+    }
 }

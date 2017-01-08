@@ -27,6 +27,11 @@ public interface Trade {
     Set<? extends TradedGoods> getGoods();
 
     /**
+     * @param tradedGoods 添加下单商品
+     */
+    void addTradedGoods(TradedGoods tradedGoods);
+
+    /**
      * @return 创建时间
      */
     LocalDateTime getCreatedTime();
@@ -53,11 +58,18 @@ public interface Trade {
 
     void setBuyer(Buyer buyer);
 
-    void setCloseTime(LocalDateTime localDateTime);
+    /**
+     * @return 即将关闭的时间
+     */
+    LocalDateTime getCloseTime();
 
-    void addTradedGoods(TradedGoods tradedGoods);
+    /**
+     * @param localDateTime 设置即将关闭的时间
+     */
+    void setCloseTime(LocalDateTime localDateTime);
 
     TradeStatus getStatus();
 
     void setStatus(TradeStatus status);
+
 }

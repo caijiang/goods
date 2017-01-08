@@ -6,6 +6,8 @@
 
 package me.jiangcai.goods;
 
+import me.jiangcai.goods.stock.StockToken;
+
 /**
  * 被交易的商品，或者叫做交易中的商品；这些商品也可以进入售后。
  *
@@ -17,5 +19,10 @@ public interface TradedGoods extends Goods {
      * @return 数量
      */
     int getCount();
+
+    /**
+     * @return 取出仓库单号
+     */
+    StockToken toStockToken();
 
 }

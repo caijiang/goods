@@ -17,6 +17,11 @@ import java.util.List;
 public interface Goods {
 
     /**
+     * @return 数据库主键，业务无关的
+     */
+    Long getId();
+
+    /**
      * @return 毋庸置疑，商品必须得有一个名字
      */
     String getName();

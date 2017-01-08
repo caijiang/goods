@@ -8,6 +8,7 @@ package me.jiangcai.goods.demo.service.impl;
 
 import me.jiangcai.goods.Goods;
 import me.jiangcai.goods.demo.entity.DemoGoods;
+import me.jiangcai.goods.demo.entity.DemoTradedGoods;
 import me.jiangcai.goods.demo.entity.GoodsCode;
 import me.jiangcai.goods.demo.entity.pk.GoodsCodePK;
 import me.jiangcai.goods.demo.repository.GoodsCodeRepository;
@@ -34,7 +35,7 @@ public class DemoStockService implements StockService {
 
     @Override
     public boolean support(Goods goods) {
-        return goods instanceof DemoGoods;
+        return goods instanceof DemoGoods || goods instanceof DemoTradedGoods;
     }
 
     @Override
@@ -58,7 +59,7 @@ public class DemoStockService implements StockService {
 
     @Override
     public void release(Goods goods, StockToken token) {
-        goodsCodeRepository.getOne(new GoodsCodePK((me.jiangcai.goods.core.entity.Goods) goods, token.productSKUCode())).setUsed(false);
+        goodsCodeRepository.getOne(new GoodsCodePK(goods, token.productSKUCode())).setUsed(false);
     }
 
     @Override

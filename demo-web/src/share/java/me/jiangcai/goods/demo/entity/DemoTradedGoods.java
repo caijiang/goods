@@ -12,6 +12,7 @@ import me.jiangcai.goods.GoodsImage;
 import me.jiangcai.goods.Seller;
 import me.jiangcai.goods.TradeEntity;
 import me.jiangcai.goods.TradedGoods;
+import me.jiangcai.goods.stock.StockToken;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -27,12 +28,17 @@ import java.util.List;
 @Embeddable
 @Setter
 @Getter
-public class DemoTradedGoods implements TradedGoods {
+public class DemoTradedGoods implements TradedGoods, StockToken {
 
     @ManyToOne(optional = false)
     private DemoGoods goods;
     @Column(length = GoodsCode.CodeLength)
     private String code;
+
+    @Override
+    public Long getId() {
+        return goods.getId();
+    }
 
     @Override
     public String getName() {
@@ -102,5 +108,15 @@ public class DemoTradedGoods implements TradedGoods {
     @Override
     public int getCount() {
         return 1;
+    }
+
+    @Override
+    public StockToken toStockToken() {
+        return this;
+    }
+
+    @Override
+    public String productSKUCode() {
+        return code;
     }
 }

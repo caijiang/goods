@@ -17,12 +17,15 @@ import me.jiangcai.goods.service.TradeService;
 import me.jiangcai.goods.stock.StockService;
 import me.jiangcai.goods.test.GoodsServletTest;
 import me.jiangcai.goods.trade.Trade;
+import me.jiangcai.goods.trade.TradeStatus;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.UUID;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,7 +43,7 @@ public class TradeServiceTest extends GoodsServletTest {
     private StockService demoStockService;
 
     @Test
-    public void go() throws IOException {
+    public void go() throws IOException, InterruptedException {
 
         Goods goods = manageGoodsService.addGoods(() -> new DemoGoods()
                 , goods1 -> demoGoodsService.saveGoods((DemoGoods) goods1), null, null
@@ -66,19 +69,41 @@ public class TradeServiceTest extends GoodsServletTest {
         assertThat(demoStockService.usableCount(goods))
                 .isEqualByComparingTo(1L);
 
+        Semaphore semaphore = new Semaphore(0);
+
+        GoodsServletTest.tradeCloseEventHook = event -> {
+            new Thread(() -> {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ignored) {
+                }
+                semaphore.release();
+            }).start();
+        };
 // 建立一个订单
-        Trade dbTrade = createRandomTrade(goods);
+        Trade dbTrade = createRandomTrade(goods, Duration.ofMillis(1000));
 
         System.out.println(dbTrade);
         assertThat(demoStockService.usableCount(goods))
                 .isEqualByComparingTo(0L);
 
+        semaphore.tryAcquire(4, TimeUnit.SECONDS);
+
+        assertThat(demoGoodsService.loadTrade((DemoTrade) dbTrade).getStatus())
+                .isEqualByComparingTo(TradeStatus.closed);
+        assertThat(demoStockService.usableCount(goods))
+                .isEqualByComparingTo(1L);
+
     }
 
     private Trade createRandomTrade(Goods goods) {
+        return createRandomTrade(goods, Duration.ofMinutes(30));
+    }
+
+    private Trade createRandomTrade(Goods goods, Duration duration) {
         return tradeService.createTrade(() -> new DemoTrade(), trade -> demoGoodsService.saveTrade((DemoTrade) trade)
                 , trade -> demoGoodsService.loadTrade((DemoTrade) trade)
                 , (goods1, token) -> demoGoodsService.createTradedGoods((DemoGoods) goods1, token)
-                , goods, 1, null, Duration.ofMinutes(30));
+                , goods, 1, null, duration);
     }
 }

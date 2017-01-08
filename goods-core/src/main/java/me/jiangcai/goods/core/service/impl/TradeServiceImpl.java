@@ -9,6 +9,7 @@ package me.jiangcai.goods.core.service.impl;
 import me.jiangcai.goods.Buyer;
 import me.jiangcai.goods.Goods;
 import me.jiangcai.goods.TradedGoods;
+import me.jiangcai.goods.event.TradeCloseEvent;
 import me.jiangcai.goods.exception.IllegalGoodsException;
 import me.jiangcai.goods.exception.ShortageStockException;
 import me.jiangcai.goods.service.TradeService;
@@ -16,6 +17,7 @@ import me.jiangcai.goods.stock.StockManageService;
 import me.jiangcai.goods.stock.StockService;
 import me.jiangcai.goods.stock.StockToken;
 import me.jiangcai.goods.trade.Trade;
+import me.jiangcai.goods.trade.TradeStatus;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +64,7 @@ public class TradeServiceImpl implements TradeService {
         StockService stockService = stockManageService.stockService(goods);
 
         Trade trade = tradeSupplier.get();
+        trade.setStatus(TradeStatus.ordered);
 
         trade.setBuyer(buyer);
 
@@ -88,7 +91,21 @@ public class TradeServiceImpl implements TradeService {
     @Override
     public Trade checkTrade(Trade trade, Function<Trade, Trade> tradeLoader) {
         trade = tradeLoader.apply(trade);
-// TODO 依然是未支付状态 并且时间已经超过 则枪毙
-        return null;
+
+        if (trade.getStatus() == TradeStatus.ordered && LocalDateTime.now().isAfter(trade.getCloseTime())) {
+            // 先退货
+            trade.getGoods().forEach(traded -> {
+                StockService stockService = stockManageService.stockService(traded);
+                stockService.release(traded, traded.toStockToken());
+            });
+            trade.setStatus(TradeStatus.closed);
+            try {
+                applicationEventPublisher.publishEvent(new TradeCloseEvent(trade));
+            } catch (Throwable ex) {
+                log.debug("Event", ex);
+            }
+        }
+
+        return trade;
     }
 }
