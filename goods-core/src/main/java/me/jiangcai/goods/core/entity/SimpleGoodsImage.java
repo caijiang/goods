@@ -11,27 +11,41 @@ import lombok.Setter;
 import me.jiangcai.goods.GoodsImage;
 import me.jiangcai.goods.image.ScaledImage;
 
-import javax.persistence.Embeddable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author CJ
  */
-//@Entity
-@Embeddable
+@Entity
 @Setter
 @Getter
 public class SimpleGoodsImage implements GoodsImage {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @ElementCollection
     private Set<ScaledImage> imageSet;
+    @Column(length = 50)
     private String description;
 
     @Override
     public Set<ScaledImage> getScaledImages() {
         return imageSet;
+    }
+
+    @Override
+    public void addScaledImage(ScaledImage image) {
+        if (imageSet == null)
+            imageSet = new HashSet<>();
+        imageSet.add(image);
     }
 }

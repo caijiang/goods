@@ -36,6 +36,11 @@ public interface Goods {
     void setPrice(BigDecimal price);
 
     /**
+     * @return 初始价格
+     */
+    Number getOriginalPrice();
+
+    /**
      * @return 商品既然可见，则需有售卖者；无售卖者的商品无法售卖
      */
     Seller getSeller();
@@ -53,6 +58,13 @@ public interface Goods {
      * @return 所有图片
      */
     List<? extends GoodsImage> getGoodsImages();
+
+    /**
+     * @return 标题图片
+     */
+    default GoodsImage getTitleGoodsImage() {
+        return getGoodsImages().get(0);
+    }
 
     void addGoodsImage(GoodsImage goodsImage);
 

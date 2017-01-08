@@ -69,7 +69,7 @@ public class ManageGoodsServiceImpl implements ManageGoodsService {
                 scaledImage.setUsage(ImageUsage.preview);
             }
 
-            String newPath = "/goods_images/" + UUID.randomUUID().toString() + scaledImage.getFormat();
+            String newPath = "goods_images/" + UUID.randomUUID().toString() + scaledImage.getFormat();
             // 执行转存
             try (InputStream inputStream = resourceService.getResource(path).getInputStream()) {
                 resourceService.uploadResource(newPath, inputStream);
@@ -77,12 +77,18 @@ public class ManageGoodsServiceImpl implements ManageGoodsService {
             }
             resourceService.deleteResource(path);
 
-            image.getScaledImages().add(scaledImage);
+            image.addScaledImage(scaledImage);
 
             goods.addGoodsImage(image);
         }
 
         return goodsSaver.apply(goods);
+    }
+
+    @Override
+    public Goods addGoods(Supplier<Goods> goodsSupplier, Function<Goods, Goods> goodsSaver, Seller seller
+            , TradeEntity tradeEntity, String name, BigDecimal price, String... imagePaths) throws IOException {
+        return addGoods(goodsSupplier, goodsSaver, seller, tradeEntity, name, price, SimpleGoodsImage::new, imagePaths);
     }
 
     @Override

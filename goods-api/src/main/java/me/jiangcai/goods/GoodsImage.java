@@ -22,6 +22,8 @@ public interface GoodsImage {
      */
     Set<ScaledImage> getScaledImages();
 
+    void addScaledImage(ScaledImage image);
+
     /**
      * @return 这是可选的描述
      */

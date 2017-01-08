@@ -39,9 +39,26 @@ public interface ManageGoodsService {
      * @param imagePaths         图片path  @return 新增的商品       @see me.jiangcai.lib.resource.service.ResourceService#getResource(String)
      */
     @Transactional
-    Goods addGoods(Supplier<Goods> goodsSupplier, Function<Goods, Goods> goodsSaver, Seller seller, TradeEntity tradeEntity, String name
+    Goods addGoods(Supplier<Goods> goodsSupplier, Function<Goods, Goods> goodsSaver, Seller seller
+            , TradeEntity tradeEntity, String name
             , BigDecimal price
             , Supplier<GoodsImage> goodsImageSupplier, String... imagePaths) throws IOException;
+
+    /**
+     * 添加商品,执行这个动作需是经营者
+     *
+     * @param goodsSupplier 负责初始化Goods的
+     * @param goodsSaver    负责持久化
+     * @param seller        经营者
+     * @param tradeEntity   拥有者(货物实际的所有者，比如供应商)
+     * @param name          名称
+     * @param price         价格
+     * @param imagePaths    图片path  @return 新增的商品       @see me.jiangcai.lib.resource.service.ResourceService#getResource(String)
+     */
+    @Transactional
+    Goods addGoods(Supplier<Goods> goodsSupplier, Function<Goods, Goods> goodsSaver, Seller seller
+            , TradeEntity tradeEntity, String name
+            , BigDecimal price, String... imagePaths) throws IOException;
 
     /**
      * 上架商品

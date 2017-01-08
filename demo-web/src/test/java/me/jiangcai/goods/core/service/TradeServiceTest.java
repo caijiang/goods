@@ -7,7 +7,6 @@
 package me.jiangcai.goods.core.service;
 
 import me.jiangcai.goods.Goods;
-import me.jiangcai.goods.core.entity.SimpleGoodsImage;
 import me.jiangcai.goods.demo.entity.DemoGoods;
 import me.jiangcai.goods.demo.entity.DemoTrade;
 import me.jiangcai.goods.exception.IllegalGoodsException;
@@ -45,9 +44,15 @@ public class TradeServiceTest extends GoodsServletTest {
     @Test
     public void go() throws IOException, InterruptedException {
 
-        Goods goods = manageGoodsService.addGoods(() -> new DemoGoods()
+        int imagesCount = 1 + random.nextInt(3);
+        String[] images = new String[imagesCount];
+        for (int i = 0; i < images.length; i++) {
+            images[i] = randomImageResourcePath();
+        }
+
+        Goods goods = manageGoodsService.addGoods(DemoGoods::new
                 , goods1 -> demoGoodsService.saveGoods((DemoGoods) goods1), null, null
-                , UUID.randomUUID().toString(), randomPrice(), () -> new SimpleGoodsImage());
+                , UUID.randomUUID().toString(), randomPrice(), images);
 
         try {
             createRandomTrade(goods);

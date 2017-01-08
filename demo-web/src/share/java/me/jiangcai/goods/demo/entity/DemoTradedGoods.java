@@ -61,6 +61,11 @@ public class DemoTradedGoods implements TradedGoods, StockToken {
     }
 
     @Override
+    public Number getOriginalPrice() {
+        return goods.getOriginalPrice();
+    }
+
+    @Override
     public Seller getSeller() {
         return goods.getSeller();
     }
