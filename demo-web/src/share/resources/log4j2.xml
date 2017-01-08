@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ 版权所有:蒋才
+  ~ (c) Copyright Cai Jiang
+  ~ 2013-2017. All rights reserved.
+  -->
+
+<configuration status="OFF">
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+    </appenders>
+    <loggers>
+        <!--<logger name="org.springframework.web" level="debug"/>-->
+        <!--<logger name="org.springframework.orm.jpa" level="debug"/>-->
+        <!--<logger name="org.apache.http" level="debug"/>-->
+        <!--<logger name="org.springframework.security" level="debug"/>-->
+        <!--<logger name="org.springframework.orm.jpa" level="debug"/>-->
+        <logger name="me.jiangcai.goods" level="debug"/>
+        <!--<logger name="me.jiangcai.chanpay" level="debug"/>-->
+        <root level="info">
+            <appender-ref ref="Console"/>
+        </root>
+
+    </loggers>
+</configuration>

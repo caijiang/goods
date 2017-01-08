@@ -6,9 +6,12 @@
 
 package me.jiangcai.goods.trade;
 
+import me.jiangcai.goods.Buyer;
 import me.jiangcai.goods.TradedGoods;
+import me.jiangcai.goods.payment.PaymentMethod;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -21,7 +24,7 @@ public interface Trade {
     /**
      * @return 订单中包括的商品
      */
-    Set<TradedGoods> getGoods();
+    Set<? extends TradedGoods> getGoods();
 
     /**
      * @return 创建时间
@@ -30,14 +33,31 @@ public interface Trade {
 
 //    Set<PayInfo> getPaySet();
 
+    void setCreatedTime(LocalDateTime localDateTime);
+
     /**
      * @return 成功支付的支付信息
      */
     PayInfo getSuccessPay();
+    // 还有物流
 
     /**
      * @return 当前正在进行的支付信息
      */
     PayInfo getCurrentPay();
-    // 还有物流
+
+    /**
+     * @return 支持的支付方式
+     */
+    List<PaymentMethod> supportPaymentMethods();
+
+    void setBuyer(Buyer buyer);
+
+    void setCloseTime(LocalDateTime localDateTime);
+
+    void addTradedGoods(TradedGoods tradedGoods);
+
+    TradeStatus getStatus();
+
+    void setStatus(TradeStatus status);
 }

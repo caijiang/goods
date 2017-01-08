@@ -6,6 +6,7 @@
 
 package me.jiangcai.goods;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -20,25 +21,39 @@ public interface Goods {
      */
     String getName();
 
+    void setName(String name);
+
     /**
      * @return 商品当然也得有价格
      */
     Number getPrice();
+
+    void setPrice(BigDecimal price);
 
     /**
      * @return 商品既然可见，则需有售卖者；无售卖者的商品无法售卖
      */
     Seller getSeller();
 
+    void setSeller(Seller seller);
+
     /**
      * @return 商品持有者
      */
     TradeEntity getOwner();
+
+    void setOwner(TradeEntity owner);
 
     /**
      * @return 所有图片
      */
     List<? extends GoodsImage> getGoodsImages();
 
+    void addGoodsImage(GoodsImage goodsImage);
 
+    boolean isEnable();
+
+    void setEnable(boolean enable);
+
+    String getStockStyle();
 }

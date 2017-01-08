@@ -7,7 +7,6 @@
 package me.jiangcai.goods.image;
 
 import lombok.Data;
-import me.jiangcai.lib.resource.Resource;
 
 import javax.persistence.Embeddable;
 
@@ -21,7 +20,7 @@ import javax.persistence.Embeddable;
 @Data
 public class ScaledImage {
 
-    private Resource resource;
+    private String resourcePath;
     private int width;
     private int height;
     private String format;

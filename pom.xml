@@ -20,6 +20,7 @@
         <module>goods-api</module>
         <module>goods-core</module>
         <module>demo-web</module>
+        <module>plugin-virtual-good</module>
     </modules>
 
     <properties>

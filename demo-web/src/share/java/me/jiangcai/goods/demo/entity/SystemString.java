@@ -4,7 +4,7 @@
  * 2013-2017. All rights reserved.
  */
 
-package me.jiangcai.goods.core.entity;
+package me.jiangcai.goods.demo.entity;
 
 import lombok.Getter;
 import lombok.Setter;

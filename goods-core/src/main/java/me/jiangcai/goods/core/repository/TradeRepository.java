@@ -6,11 +6,11 @@
 
 package me.jiangcai.goods.core.repository;
 
-import me.jiangcai.goods.core.entity.SystemString;
+import me.jiangcai.goods.core.entity.Trade;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * @author CJ
  */
-public interface SystemStringRepository extends JpaRepository<SystemString, String> {
+public interface TradeRepository extends JpaRepository<Trade, Long> {
 }

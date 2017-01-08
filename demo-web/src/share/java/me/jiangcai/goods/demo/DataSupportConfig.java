@@ -4,7 +4,7 @@
  * 2013-2017. All rights reserved.
  */
 
-package me.jiangcai.goods.core.config;
+package me.jiangcai.goods.demo;
 
 import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;

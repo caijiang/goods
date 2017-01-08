@@ -7,9 +7,13 @@
 package me.jiangcai.goods.test;
 
 import me.jiangcai.goods.demo.DemoConfig;
+import me.jiangcai.goods.demo.service.DemoGoodsService;
 import me.jiangcai.lib.test.SpringWebTest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.math.BigDecimal;
 
 /**
  * @author CJ
@@ -17,4 +21,11 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 @ContextConfiguration(classes = {DemoConfig.class})
 public abstract class GoodsServletTest extends SpringWebTest {
+
+    @Autowired
+    protected DemoGoodsService demoGoodsService;
+
+    protected BigDecimal randomPrice() {
+        return new BigDecimal(1 + random.nextInt(3000000));
+    }
 }
