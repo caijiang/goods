@@ -128,7 +128,7 @@ public class DemoTradedGoods implements TradedGoods, StockToken {
 
     @Override
     public StockToken[] toStockToken() {
-        return this;
+        return new StockToken[]{this};
     }
 
     @Override
