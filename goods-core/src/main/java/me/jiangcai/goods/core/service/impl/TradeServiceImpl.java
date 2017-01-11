@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * @author CJ
@@ -95,7 +96,7 @@ public class TradeServiceImpl implements TradeService {
             // 先退货
             trade.getGoods().forEach(traded -> {
                 StockService stockService = stockManageService.stockService(traded);
-                stockService.release(traded, traded.toStockToken());
+                Stream.of(traded.toStockToken()).forEach(t -> stockService.release(traded, t));
             });
             trade.setStatus(TradeStatus.closed);
             try {

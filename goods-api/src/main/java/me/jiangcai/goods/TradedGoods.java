@@ -23,6 +23,6 @@ public interface TradedGoods extends Goods {
     /**
      * @return 取出仓库单号
      */
-    StockToken toStockToken();
+    StockToken[] toStockToken();
 
 }
