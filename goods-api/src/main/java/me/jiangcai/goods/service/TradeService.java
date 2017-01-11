@@ -31,18 +31,22 @@ public interface TradeService {
      * 建立订单
      * 如果超时未支付，则会被关闭
      *
-     * @param tradeSupplier
-     * @param tradeSaver
-     * @param tradeLoader
-     * @param tradedGoodsCreator
+     * @param tradeSupplier      订单生成器
+     * @param tradeSaver         订单保存者
+     * @param tradeLoader        订单载入者
+     * @param tradedGoodsCreator 就某一商品而创建的在售商品处理者
      * @param goods              商品
      * @param count              数量
      * @param buyer              购买者
-     * @param lockDuration       库存锁定时间     @return 已建立的订单     @throws IllegalGoodsException  商品已下架或者什么的
+     * @param lockDuration       库存锁定时间
+     * @return 已建立的订单
+     * @throws IllegalGoodsException  商品已下架或者什么的
      * @throws ShortageStockException 库存不足
      */
     @Transactional
-    Trade createTrade(Supplier<Trade> tradeSupplier, Function<Trade, Trade> tradeSaver, Function<Trade, Trade> tradeLoader, BiFunction<Goods, StockToken, TradedGoods> tradedGoodsCreator, Goods goods, int count, Buyer buyer, Duration lockDuration) throws IllegalGoodsException
+    Trade createTrade(Supplier<Trade> tradeSupplier, Function<Trade, Trade> tradeSaver
+            , Function<Trade, Trade> tradeLoader, BiFunction<Goods, StockToken[], TradedGoods> tradedGoodsCreator
+            , Goods goods, int count, Buyer buyer, Duration lockDuration) throws IllegalGoodsException
             , ShortageStockException;
 
     /**

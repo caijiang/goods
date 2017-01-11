@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -52,7 +53,7 @@ public class TradeServiceImpl implements TradeService {
 
     @Override
     public Trade createTrade(Supplier<Trade> tradeSupplier, Function<Trade, Trade> tradeSaver
-            , Function<Trade, Trade> tradeLoader, BiFunction<Goods, StockToken, TradedGoods> tradedGoodsCreator, Goods goods, int count
+            , Function<Trade, Trade> tradeLoader, BiFunction<Goods, StockToken[], TradedGoods> tradedGoodsCreator, Goods goods, int count
             , Buyer buyer, Duration lockDuration) throws IllegalGoodsException
             , ShortageStockException {
 
@@ -71,12 +72,10 @@ public class TradeServiceImpl implements TradeService {
         trade.setCreatedTime(LocalDateTime.now());
         trade.setCloseTime(LocalDateTime.now().plus(lockDuration));
 
-        stockService.lock(goods, count).forEach(token -> {
-            {
-                TradedGoods tradedGoods = tradedGoodsCreator.apply(goods, token);
-                trade.addTradedGoods(tradedGoods);
-            }
-        });
+        final Collection<? extends StockToken> collection = stockService.lock(goods, count);
+
+        TradedGoods tradedGoods = tradedGoodsCreator.apply(goods, collection.toArray(new StockToken[collection.size()]));
+        trade.addTradedGoods(tradedGoods);
 
         Trade savedTrade = tradeSaver.apply(trade);
 

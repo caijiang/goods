@@ -29,5 +29,5 @@ public interface DemoGoodsService {
     @Transactional(readOnly = true)
     DemoTrade loadTrade(DemoTrade trade);
 
-    DemoTradedGoods createTradedGoods(DemoGoods goods, StockToken token);
+    DemoTradedGoods createTradedGoods(DemoGoods goods, StockToken[] token);
 }

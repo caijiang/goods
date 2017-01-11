@@ -58,10 +58,10 @@ public class DemoGoodsServiceImpl implements DemoGoodsService {
     }
 
     @Override
-    public DemoTradedGoods createTradedGoods(DemoGoods goods, StockToken token) {
+    public DemoTradedGoods createTradedGoods(DemoGoods goods, StockToken[] token) {
         DemoTradedGoods goods1 = new DemoTradedGoods();
         goods1.setGoods(goods);
-        goods1.setCode(token.productSKUCode());
+        goods1.setCode(token[0].productSKUCode());
         return goods1;
     }
 }
