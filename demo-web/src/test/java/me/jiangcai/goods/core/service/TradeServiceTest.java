@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.Semaphore;
@@ -98,6 +99,8 @@ public class TradeServiceTest extends GoodsServletTest {
                 .isEqualByComparingTo(TradeStatus.closed);
         assertThat(demoStockService.usableCount(goods))
                 .isEqualByComparingTo(1L);
+        System.out.println(dbTrade.getTotalPrice());
+        assertThat(dbTrade.getTotalPrice()).isGreaterThan(BigDecimal.ZERO);
 
     }
 

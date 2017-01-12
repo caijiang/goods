@@ -47,7 +47,7 @@ public class MakeThreadSafe {
             if (arg instanceof GoodsThreadSafeLocker)
                 return ((GoodsThreadSafeLocker) arg).lockObject();
         }
-        return args[0];
+        return args[0].toString().intern();
     }
 
 }

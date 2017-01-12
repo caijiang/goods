@@ -10,6 +10,7 @@ import me.jiangcai.goods.Buyer;
 import me.jiangcai.goods.TradedGoods;
 import me.jiangcai.goods.payment.PaymentMethod;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -71,5 +72,20 @@ public interface Trade {
     TradeStatus getStatus();
 
     void setStatus(TradeStatus status);
+
+    /**
+     * @return 订单总价格
+     */
+    default BigDecimal getTotalPrice() {
+        return getGoods().stream().map(goods -> {
+            Number price = goods.getPrice();
+            BigDecimal decimal;
+            if (price instanceof BigDecimal)
+                decimal = (BigDecimal) price;
+            else
+                decimal = BigDecimal.valueOf(price.doubleValue());
+            return decimal.multiply(BigDecimal.valueOf(goods.getCount()));
+        }).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
 }
