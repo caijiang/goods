@@ -88,4 +88,15 @@ public interface Trade {
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    /**
+     * @return 订单是否已支付
+     */
+    boolean isPaidSuccess();
+
+    /**
+     * 更新支付状态
+     *
+     * @param success 是否已支付
+     */
+    void setPaidSuccess(boolean success);
 }

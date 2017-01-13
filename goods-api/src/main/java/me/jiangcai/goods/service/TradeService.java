@@ -9,10 +9,12 @@ package me.jiangcai.goods.service;
 import me.jiangcai.goods.Buyer;
 import me.jiangcai.goods.Goods;
 import me.jiangcai.goods.TradedGoods;
+import me.jiangcai.goods.event.TradePayEvent;
 import me.jiangcai.goods.exception.IllegalGoodsException;
 import me.jiangcai.goods.exception.ShortageStockException;
 import me.jiangcai.goods.stock.StockToken;
 import me.jiangcai.goods.trade.Trade;
+import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
@@ -61,6 +63,15 @@ public interface TradeService {
      */
     @Transactional
     Trade checkTrade(Trade trade, Function<Trade, Trade> tradeLoader);
+
+    /**
+     * 订单支付事件的发生
+     *
+     * @param event event
+     */
+    @Transactional
+    @EventListener(TradePayEvent.class)
+    void tradePayEvent(TradePayEvent event);
 
     // 销售者
 

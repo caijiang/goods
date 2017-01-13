@@ -29,6 +29,7 @@ public class DemoTrade extends me.jiangcai.goods.core.entity.Trade {
 
     @ElementCollection
     private Set<DemoTradedGoods> tradedSet;
+    private boolean paidSuccess;
 
     @Override
     public Set<? extends TradedGoods> getGoods() {

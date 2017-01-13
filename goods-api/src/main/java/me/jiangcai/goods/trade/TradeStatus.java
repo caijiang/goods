@@ -30,6 +30,10 @@ public enum TradeStatus {
     /**
      * 已确认
      */
-    confirmed
+    confirmed,
+    /**
+     * 异常状态:在不正确的状态被支付
+     */
+    payOnClosed
 
 }

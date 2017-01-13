@@ -10,6 +10,8 @@ import me.jiangcai.goods.Buyer;
 import me.jiangcai.goods.Goods;
 import me.jiangcai.goods.TradedGoods;
 import me.jiangcai.goods.event.TradeCloseEvent;
+import me.jiangcai.goods.event.TradeDispatchRemindEvent;
+import me.jiangcai.goods.event.TradePayEvent;
 import me.jiangcai.goods.exception.IllegalGoodsException;
 import me.jiangcai.goods.exception.ShortageStockException;
 import me.jiangcai.goods.service.TradeService;
@@ -107,5 +109,33 @@ public class TradeServiceImpl implements TradeService {
         }
 
         return trade;
+    }
+
+    @Override
+    public void tradePayEvent(TradePayEvent event) {
+        // 订单被支付，应该做的事情
+        // 状态确认是OK的
+        // 或者是这个事件被多次调度？
+        Trade trade = event.getTrade();
+
+        // 如果已支付则
+        if (trade.isPaidSuccess()) {
+            log.debug("Pay Event on paid trade:" + trade);
+            return;
+        }
+
+        if (trade.getStatus() != TradeStatus.ordered) {
+            log.debug("Pay Event on no-pay-ready trade:" + trade);
+            // 本身状态并不是在等待支付的
+            // 应该是无法的
+            if (trade.getStatus() == TradeStatus.closed) {
+                trade.setStatus(TradeStatus.payOnClosed);
+            }
+            return;
+        }
+
+        trade.setStatus(TradeStatus.paid);
+        trade.setPaidSuccess(true);
+        applicationEventPublisher.publishEvent(new TradeDispatchRemindEvent(trade));
     }
 }

@@ -12,7 +12,6 @@ import me.jiangcai.goods.demo.entity.DemoTrade;
 import me.jiangcai.goods.exception.IllegalGoodsException;
 import me.jiangcai.goods.exception.ShortageStockException;
 import me.jiangcai.goods.service.ManageGoodsService;
-import me.jiangcai.goods.service.TradeService;
 import me.jiangcai.goods.stock.StockService;
 import me.jiangcai.goods.test.GoodsServletTest;
 import me.jiangcai.goods.trade.Trade;
@@ -26,6 +25,7 @@ import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,8 +35,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SuppressWarnings("SpringJavaAutowiringInspection")
 public class TradeServiceTest extends GoodsServletTest {
 
-    @Autowired
-    private TradeService tradeService;
     @Autowired
     private ManageGoodsService manageGoodsService;
     @Autowired
@@ -102,16 +100,15 @@ public class TradeServiceTest extends GoodsServletTest {
         System.out.println(dbTrade.getTotalPrice());
         assertThat(dbTrade.getTotalPrice()).isGreaterThan(BigDecimal.ZERO);
 
+        // 模拟支付
+
+        AtomicBoolean dispatched = new AtomicBoolean(false);
+        GoodsServletTest.tradeDispatchRemindEventHook = event -> {
+            dispatched.set(true);
+        };
+        payTrade(dbTrade);
+        assertThat(dispatched.get())
+                .isTrue();
     }
 
-    private Trade createRandomTrade(Goods goods) {
-        return createRandomTrade(goods, Duration.ofMinutes(30));
-    }
-
-    private Trade createRandomTrade(Goods goods, Duration duration) {
-        return tradeService.createTrade(() -> new DemoTrade(), trade -> demoGoodsService.saveTrade((DemoTrade) trade)
-                , trade -> demoGoodsService.loadTrade((DemoTrade) trade)
-                , (goods1, token) -> demoGoodsService.createTradedGoods((DemoGoods) goods1, token)
-                , goods, 1, null, duration);
-    }
 }
