@@ -24,6 +24,7 @@ import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author CJ
@@ -86,5 +87,23 @@ public abstract class Goods implements me.jiangcai.goods.Goods, GoodsThreadSafeL
     @Override
     public Object lockObject() {
         return ("Goods-" + id).intern();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Goods)) return false;
+        Goods goods = (Goods) o;
+        return Objects.equals(id, goods.id) &&
+                Objects.equals(name, goods.name) &&
+                Objects.equals(description, goods.description) &&
+                Objects.equals(richDetail, goods.richDetail) &&
+                Objects.equals(price, goods.price) &&
+                Objects.equals(stockStyle, goods.stockStyle);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, richDetail, price, stockStyle);
     }
 }
