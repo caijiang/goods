@@ -7,6 +7,7 @@
 package me.jiangcai.goods.trade;
 
 import me.jiangcai.goods.Buyer;
+import me.jiangcai.goods.GoodsUtil;
 import me.jiangcai.goods.TradedGoods;
 import me.jiangcai.goods.payment.PaymentMethod;
 
@@ -79,11 +80,7 @@ public interface Trade {
     default BigDecimal getTotalPrice() {
         return getGoods().stream().map(goods -> {
             Number price = goods.getPrice();
-            BigDecimal decimal;
-            if (price instanceof BigDecimal)
-                decimal = (BigDecimal) price;
-            else
-                decimal = BigDecimal.valueOf(price.doubleValue());
+            BigDecimal decimal = GoodsUtil.toBigDecimal(price);
             return decimal.multiply(BigDecimal.valueOf(goods.getCount()));
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
