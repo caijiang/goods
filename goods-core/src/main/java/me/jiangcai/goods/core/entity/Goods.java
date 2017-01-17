@@ -39,6 +39,11 @@ public abstract class Goods implements me.jiangcai.goods.Goods, GoodsThreadSafeL
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * 品牌
+     */
+    @Column(length = 50)
+    private String brand;
     @Column(length = 100)
     private String name;
     /**
