@@ -8,6 +8,7 @@ package me.jiangcai.goods.image;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
@@ -24,6 +25,7 @@ public class ScaledImage {
     private int width;
     private int height;
     private String format;
+    @Column(name = "USG")
     private ImageUsage usage;
 
 }
