@@ -50,6 +50,11 @@ public interface Goods {
     void setName(String name);
 
     /**
+     * @return 品牌
+     */
+    String getBrand();
+
+    /**
      * @return 商品当然也得有价格
      */
     Number getPrice();

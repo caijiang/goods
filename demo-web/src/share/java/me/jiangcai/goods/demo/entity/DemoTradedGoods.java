@@ -62,6 +62,11 @@ public class DemoTradedGoods implements TradedGoods, StockToken {
     }
 
     @Override
+    public String getBrand() {
+        return goods.getBrand();
+    }
+
+    @Override
     public Number getPrice() {
         return goods.getPrice();
     }
